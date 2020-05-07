@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
-import App from "./app/layout/App";
+import App from "./app/App";
 import * as serviceWorker from "./serviceWorker";
 
 let render = () => {
@@ -9,7 +9,7 @@ let render = () => {
 };
 
 if (module.hot) {
-  module.hot.accept("./app/layout/App.jsx", () => {
+  module.hot.accept("./app/App.jsx", () => {
     setTimeout(render);
   });
 }
