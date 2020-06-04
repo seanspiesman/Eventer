@@ -1,11 +1,12 @@
 import React from "react";
 import { Menu, Button } from "semantic-ui-react";
 
-export const SignedOut = ({ signIn }) => {
+export const SignedOut = ({ signIn, register }) => {
   return (
     <Menu.Item position="right">
       <Button basic inverted content="Login" onClick={signIn} />
       <Button
+        onClick={register}
         basic
         inverted
         content="Register"
@@ -14,3 +15,5 @@ export const SignedOut = ({ signIn }) => {
     </Menu.Item>
   );
 };
+
+// export default SignedOut;

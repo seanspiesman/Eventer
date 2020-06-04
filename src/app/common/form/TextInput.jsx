@@ -19,3 +19,5 @@ export const TextInput = ({
     </Form.Field>
   );
 };
+
+export default TextInput;
