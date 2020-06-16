@@ -1,7 +1,7 @@
 import React from "react";
 import PlacesAutocomplete, {
-  geocodeByAddress,
-  getLatLng,
+  // geocodeByAddress,
+  // getLatLng,
 } from "react-places-autocomplete";
 
 class TestPlaceInput extends React.Component {

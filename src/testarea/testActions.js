@@ -1,5 +1,5 @@
 import { INCREMENT_COUNTER, DECREMENT_COUNTER } from "./testContants";
-import { asyncActionStart, asyncActionFinish } from "../app/async/asyncActions";
+import { asyncActionFinish } from "../app/async/asyncActions";
 import { ASYNC_ACTION_START } from "../app/async/asyncConstants";
 
 export const incrementCounter = () => {

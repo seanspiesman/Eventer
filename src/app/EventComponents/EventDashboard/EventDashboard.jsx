@@ -6,6 +6,7 @@ import EventList from "../EventList/EventList";
 // import cuid from "cuid";
 import { createEvent, deleteEvent, updateEvent } from "../eventActions";
 import LoadingComponents from "../../LoadingComponents";
+import EventActivity from "../EventActivity/EventActivity";
 
 const mapState = (state) => ({
   events: state.events,
@@ -36,7 +37,7 @@ class EventDashboard extends Component {
           />
         </Grid.Column>
         <Grid.Column width={6}>
-          <h2>Activity Feed</h2>
+          <EventActivity />
         </Grid.Column>
       </Grid>
     );
