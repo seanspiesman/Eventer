@@ -6,8 +6,12 @@ import eventReducer from "../EventComponents/eventReducer";
 import modalReduer from "../Modals/modalReduer";
 import authReducer from "../auth/authReducer";
 import asyncReducer from "../async/asyncReducer";
+import { firebaseReducer } from "react-redux-firebase";
+import { firestoreReducer } from "redux-firestore";
 
 const rootReducer = combineReducers({
+  firebase: firebaseReducer,
+  firestore: firestoreReducer,
   form: FormReducer,
   test: testReducer,
   events: eventReducer,

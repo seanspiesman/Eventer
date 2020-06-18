@@ -3,15 +3,16 @@ import EventListItem from "./EventListItem";
 
 export default class EventList extends Component {
   render() {
+    const {events, deleteEvent} = this.props
     return (
       <Fragment>
-        {this.props.events.map((event) => {
+        {events && events.map((event) => {
           return (
             <EventListItem
               key={event.id}
               event={event}
               // selectEvent={this.props.selectEvent}
-              deleteEvent={this.props.deleteEvent}
+              deleteEvent={deleteEvent}
             />
           );
         })}
