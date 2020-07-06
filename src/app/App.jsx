@@ -6,7 +6,7 @@ import { Route, Switch, withRouter } from "react-router-dom";
 import { HomePage } from "./HomePage/HomePage";
 import EventDetailsPage from "./EventComponents/EventDetailsPage/EventDetailsPage";
 import { PeopleDashboard } from "./UserComponents/UserDashboard/PeopleDashboard";
-import { SettingsDashboard } from "./UserComponents/Settings/SettingsDashboard";
+import SettingsDashboard from "./UserComponents/Settings/SettingsDashboard";
 import { UserDetailsPage } from "./UserComponents/UserDetails/UserDetailsPage";
 import EventForm from "./EventComponents/EventForm/EventForm";
 import TestComponent from "../testarea/TestComponent";

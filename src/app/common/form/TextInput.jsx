@@ -1,7 +1,7 @@
 import React from "react";
 import { Form, Label } from "semantic-ui-react";
 
-export const TextInput = ({
+const TextInput = ({
   input,
   width,
   type,
