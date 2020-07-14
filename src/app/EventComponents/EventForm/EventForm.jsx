@@ -5,8 +5,8 @@ import { connect } from "react-redux";
 import { reduxForm, Field } from "redux-form";
 import { createEvent, updateEvent } from "../eventActions";
 import cuid from "cuid";
-import  TextInput  from "../../common/form/TextInput";
-import { TextArea } from "../../common/form/TextArea";
+import TextInput from "../../common/form/TextInput";
+import TextArea from "../../common/form/TextArea";
 import SelectInput from "../../common/form/SelectInput";
 import {
   combineValidators,
