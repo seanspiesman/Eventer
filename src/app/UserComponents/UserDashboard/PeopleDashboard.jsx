@@ -1,9 +1,11 @@
 import React from "react";
 
-export const PeopleDashboard = () => {
+const PeopleDashboard = () => {
   return (
     <div>
-      <h1>hi</h1>
+      <h1>PeopleDashboard</h1>
     </div>
   );
 };
+
+export default PeopleDashboard;
