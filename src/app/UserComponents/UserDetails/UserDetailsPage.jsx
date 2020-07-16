@@ -1,39 +1,48 @@
 import React, { Fragment } from "react";
 import { connect } from "react-redux";
 import { compose } from "redux";
-import { firestoreConnect } from "react-redux-firebase";
+import { firestoreConnect, isEmpty } from "react-redux-firebase";
 import UserDetailHeader from "./UserDetailHeader";
 import UserDetailDescription from "./UserDetailDescription";
 import UserDetailSidebar from "./UserDetailSidebar";
 import UserDetailPhotos from "./UserDetailPhotos";
 import UserDetailEvents from "./UserDetailEvents";
 import { Grid } from "semantic-ui-react";
+import { userDetailsQuery } from "../../userActions/userQueries";
+import LoadingComponents from "../../LoadingComponents";
 
-const query = ({ auth }) => {
-  return [
-    {
-      collection: "users",
-      doc: auth.uid,
-      subcollections: [{ collection: "photos" }],
-      storeAs: "photos",
-    },
-  ];
+const mapState = (state, ownProps) => {
+  let userUid = null;
+  let profile = {};
+
+  if (ownProps.match.params.id === state.auth.uid) {
+    profile = state.firebase.profile;
+  } else {
+    profile =
+      !isEmpty(state.firestore.ordered.profile) &&
+      state.firestore.ordered.profile[0];
+    userUid = ownProps.match.params.id;
+  }
+  return {
+    profile,
+    userUid,
+    auth: state.firebase.auth,
+    photos: state.firestore.ordered.photos,
+    requesting: state.firestore.status.requesting,
+  };
 };
 
-const mapState = (state) => ({
-  auth: state.firebase.auth,
-  profile: state.firebase.profile,
-  photos: state.firestore.ordered.photos,
-  events: state.firestore.ordered.events,
-});
+const UserDetailsPage = ({ auth, profile, photos, match, requesting }) => {
+  const isCurrentUser = auth.uid === match.params.id;
+  const loading = Object.values(requesting).some((a) => a === true);
+  if (loading) return <LoadingComponents />;
 
-const UserDetailsPage = ({ auth, profile, photos }) => {
   return (
     <Fragment>
       <Grid>
         <UserDetailHeader auth={auth} profile={profile} />
         <UserDetailDescription profile={profile} />
-        <UserDetailSidebar />
+        <UserDetailSidebar isCurrentUser={isCurrentUser} />
         <UserDetailPhotos photos={photos} />
         <UserDetailEvents />
       </Grid>
@@ -43,6 +52,5 @@ const UserDetailsPage = ({ auth, profile, photos }) => {
 
 export default compose(
   connect(mapState),
-  firestoreConnect((auth) => query(auth)),
-  firestoreConnect([{ collection: "events" }])
+  firestoreConnect((auth, userUid) => userDetailsQuery(auth, userUid))
 )(UserDetailsPage);

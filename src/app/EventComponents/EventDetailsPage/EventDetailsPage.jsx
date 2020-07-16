@@ -5,7 +5,6 @@ import EventDetailHeader from "./EventDetailHeader";
 import EventDetailInfo from "./EventDetailInfo";
 import EventDetailChat from "./EventDetailChat";
 import EventDetailSidebar from "./EventDetailSidebar";
-import { toastr } from "react-redux-toastr";
 import { objectToArray } from "../../common/util/helpers";
 import { withFirestore } from "react-redux-firebase";
 import {

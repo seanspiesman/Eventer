@@ -141,7 +141,7 @@ export const cancelGoingToEvent = (event) => async (
   const firestore = getFirestore();
   const firebase = getFirebase();
   const user = firebase.auth().currentUser;
-  const profile = getState().firebase.profile;
+  // const profile = getState().firebase.profile;
 
   try {
     await firestore.update(`events/${event.id}`, {
