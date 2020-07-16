@@ -20,7 +20,7 @@ const UserDetailHeader = ({ profile, auth }) => {
               src={profile.photoURL || "/assets/user.png"}
             />
             <Item.Content verticalAlign="bottom">
-              <Header as="h1">{auth.displayName}</Header>
+              <Header as="h1">{profile.displayName}</Header>
               <br />
               <Header as="h3">{profile.occupation}</Header>
               <br />

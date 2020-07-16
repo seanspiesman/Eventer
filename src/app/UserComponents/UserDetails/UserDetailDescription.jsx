@@ -7,7 +7,6 @@ const UserDetailDescription = ({ profile }) => {
   if (profile.createdAt) {
     created = format(profile.createdAt.toDate(), "MMMM do, Y");
   }
-
   return (
     <Grid.Column width={12}>
       <Segment>

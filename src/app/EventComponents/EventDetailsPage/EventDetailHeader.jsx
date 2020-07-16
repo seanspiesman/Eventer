@@ -1,8 +1,7 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { Segment, Image, Item, Header, Button } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import { format } from "date-fns/esm";
-import { parseISO } from "date-fns";
 
 const eventImageStyle = {
   filter: "brightness(30%)",
@@ -17,7 +16,13 @@ const eventImageTextStyle = {
   color: "white",
 };
 
-const EventDetailHeader = ({ event }) => {
+const EventDetailHeader = ({
+  event,
+  isHost,
+  isGoing,
+  goingToEvent,
+  cancelGoingToEvent,
+}) => {
   return (
     <Segment.Group>
       <Segment basic attached="top" style={{ padding: "0" }}>
@@ -36,10 +41,15 @@ const EventDetailHeader = ({ event }) => {
                   style={{ color: "white" }}
                 />
                 <p>
-                  {event.date && format(parseISO(event.date), "EEEE do LLLL")}
+                  {event.date && format(event.date.toDate(), "EEEE do LLLL")}
                 </p>
                 <p>
-                  Hosted by <strong>{event.hostedBy}</strong>
+                  Hosted by{" "}
+                  <strong>
+                    <Link to={`/profile/${event.hostUid}`}>
+                      {event.hostedBy}
+                    </Link>
+                  </strong>
                 </p>
               </Item.Content>
             </Item>
@@ -47,17 +57,34 @@ const EventDetailHeader = ({ event }) => {
         </Segment>
       </Segment>
 
-      <Segment attached="bottom">
-        <Button>Cancel My Place</Button>
-        <Button color="teal">JOIN THIS EVENT</Button>
-        <Button
-          as={Link}
-          to={`/manage/${event.id}`}
-          color="orange"
-          floated="right"
-        >
-          Manage Event
-        </Button>
+      <Segment attached="bottom" clearing>
+        {!isHost && (
+          <Fragment>
+            {isGoing ? (
+              <Button
+                onClick={() => {
+                  cancelGoingToEvent(event);
+                }}
+              >
+                Cancel My Place
+              </Button>
+            ) : (
+              <Button onClick={() => goingToEvent(event)} color="teal">
+                JOIN THIS EVENT
+              </Button>
+            )}
+          </Fragment>
+        )}
+        {isHost && (
+          <Button
+            as={Link}
+            to={`/manage/${event.id}`}
+            color="orange"
+            floated="right"
+          >
+            Manage Event
+          </Button>
+        )}
       </Segment>
     </Segment.Group>
   );
