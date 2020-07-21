@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, Component } from "react";
 import { connect } from "react-redux";
 import { compose } from "redux";
 import { firestoreConnect, isEmpty } from "react-redux-firebase";
@@ -10,6 +10,7 @@ import UserDetailEvents from "./UserDetailEvents";
 import { Grid } from "semantic-ui-react";
 import { userDetailsQuery } from "../../userActions/userQueries";
 import LoadingComponents from "../../LoadingComponents";
+import { getUserEvents } from "../../userActions/userActions";
 
 const mapState = (state, ownProps) => {
   let userUid = null;
@@ -26,31 +27,61 @@ const mapState = (state, ownProps) => {
   return {
     profile,
     userUid,
+    events: state.events,
+    eventsLoading: state.async.loading,
     auth: state.firebase.auth,
     photos: state.firestore.ordered.photos,
     requesting: state.firestore.status.requesting,
   };
 };
 
-const UserDetailsPage = ({ auth, profile, photos, match, requesting }) => {
-  const isCurrentUser = auth.uid === match.params.id;
-  const loading = Object.values(requesting).some((a) => a === true);
-  if (loading) return <LoadingComponents />;
-
-  return (
-    <Fragment>
-      <Grid>
-        <UserDetailHeader auth={auth} profile={profile} />
-        <UserDetailDescription profile={profile} />
-        <UserDetailSidebar isCurrentUser={isCurrentUser} />
-        <UserDetailPhotos photos={photos} />
-        <UserDetailEvents />
-      </Grid>
-    </Fragment>
-  );
+const actions = {
+  getUserEvents,
 };
 
+class UserDetailsPage extends Component {
+  async componentDidMount() {
+    let events = await this.props.getUserEvents(this.props.userUid);
+    console.log(events);
+  }
+
+  changeTab = (e, data) => {
+    this.props.getUserEvents(this.props.userUid, data.activeIndex);
+  };
+
+  render() {
+    const {
+      events,
+      eventsLoading,
+      auth,
+      profile,
+      photos,
+      match,
+      requesting,
+    } = this.props;
+    const isCurrentUser = auth.uid === match.params.id;
+    const loading = Object.values(requesting).some((a) => a === true);
+    if (loading) return <LoadingComponents />;
+
+    return (
+      <Fragment>
+        <Grid>
+          <UserDetailHeader auth={auth} profile={profile} />
+          <UserDetailDescription profile={profile} />
+          <UserDetailSidebar isCurrentUser={isCurrentUser} />
+          <UserDetailPhotos photos={photos} />
+          <UserDetailEvents
+            eventsLoading={eventsLoading}
+            events={events}
+            changeTab={this.changeTab}
+          />
+        </Grid>
+      </Fragment>
+    );
+  }
+}
+
 export default compose(
-  connect(mapState),
+  connect(mapState, actions),
   firestoreConnect((auth, userUid) => userDetailsQuery(auth, userUid))
 )(UserDetailsPage);

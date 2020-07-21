@@ -11,6 +11,7 @@ import {
   goingToEvent,
   cancelGoingToEvent,
 } from "../../userActions/userActions";
+import LoadingComponents from "../../LoadingComponents";
 
 const mapState = (state, ownProps) => {
   const eventId = ownProps.match.params.id;
@@ -47,26 +48,33 @@ class EventDetailsPage extends Component {
     const { event, auth, goingToEvent, cancelGoingToEvent } = this.props;
     const attendees =
       event && event.attendees && objectToArray(event.attendees);
-    const isHost = event.hostUid === auth.uid;
+    var isHost = false;
+    if (event && event.hostUid !== undefined) {
+      isHost = event.hostUid === auth.uid;
+    }
     const isGoing = attendees && attendees.some((a) => a.id === auth.uid);
-    return (
-      <Grid>
-        <Grid.Column width={10}>
-          <EventDetailHeader
-            event={event}
-            isGoing={isGoing}
-            isHost={isHost}
-            goingToEvent={goingToEvent}
-            cancelGoingToEvent={cancelGoingToEvent}
-          />
-          <EventDetailInfo event={event} />
-          <EventDetailChat />
-        </Grid.Column>
-        <Grid.Column width={6}>
-          <EventDetailSidebar attendees={attendees} />
-        </Grid.Column>
-      </Grid>
-    );
+    if (event) {
+      return (
+        <Grid>
+          <Grid.Column width={10}>
+            <EventDetailHeader
+              event={event}
+              isGoing={isGoing}
+              isHost={isHost}
+              goingToEvent={goingToEvent}
+              cancelGoingToEvent={cancelGoingToEvent}
+            />
+            <EventDetailInfo event={event} />
+            <EventDetailChat />
+          </Grid.Column>
+          <Grid.Column width={6}>
+            <EventDetailSidebar attendees={attendees} />
+          </Grid.Column>
+        </Grid>
+      );
+    } else {
+      return <LoadingComponents />;
+    }
   }
 }
 

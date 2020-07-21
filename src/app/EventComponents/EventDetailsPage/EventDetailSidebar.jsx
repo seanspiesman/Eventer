@@ -21,7 +21,6 @@ export const EventDetailSidebar = ({ attendees }) => {
         <Item.Group relaxed divided>
           {attendees &&
             attendees.map((attendee, index) => {
-              // console.log(attendees)
               return (
                 <Item key={index} style={{ position: "relative" }}>
                   {isHost && (
