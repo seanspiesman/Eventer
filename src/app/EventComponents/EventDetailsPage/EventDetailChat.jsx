@@ -86,23 +86,22 @@ class EventDetailChat extends Component {
                               </div>
                             </Comment.Metadata>
                             <Comment.Text>{child.text}</Comment.Text>
-                            <Comment.Actions>
-                              <Comment.Action
-                                onClick={this.handleOpenReplyForm(child.id)}
-                              >
-                                {showReplyForm &&
-                                  selectedCommentId === child.id && (
-                                    <EventDetailChatForm
-                                      addEventComment={addEventComment}
-                                      eventId={eventId}
-                                      form={`reply_${child.id}`}
-                                      closeForm={this.handleCloseReplyForm}
-                                      parentId={child.parentId}
-                                    />
-                                  )}
-                                Reply
-                              </Comment.Action>
-                            </Comment.Actions>
+                            <Comment.Action
+                              onClick={this.handleOpenReplyForm(child.id)}
+                              style={{ width: "100%" }}
+                            >
+                              {showReplyForm &&
+                                selectedCommentId === child.id && (
+                                  <EventDetailChatForm
+                                    addEventComment={addEventComment}
+                                    eventId={eventId}
+                                    form={`reply_${child.id}`}
+                                    closeForm={this.handleCloseReplyForm}
+                                    parentId={child.parentId}
+                                  />
+                                )}
+                              Reply
+                            </Comment.Action>
                           </Comment.Content>
                         </Comment>
                       </Comment.Group>
