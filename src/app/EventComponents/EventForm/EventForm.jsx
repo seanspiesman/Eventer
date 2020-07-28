@@ -30,7 +30,7 @@ const mapState = (state, ownProps) => {
         (event) => event.id === eventId
       )[0] || {};
   }
-  return { initialValues: event, event };
+  return { initialValues: event, event, loading: state.async.loading };
 };
 
 const category = [
@@ -73,9 +73,9 @@ class EventForm extends Component {
     await firestore.setListener(`events/${match.params.id}`);
   }
 
-  async componentWillUnmount(){
-    const {firestore, match} = this.props;
-    await firestore.unsetListener(`events/${match.params.id}`)
+  async componentWillUnmount() {
+    const { firestore, match } = this.props;
+    await firestore.unsetListener(`events/${match.params.id}`);
   }
 
   onFormSubmit = async (values) => {
@@ -88,7 +88,7 @@ class EventForm extends Component {
         ) {
           values.venueLatLng = this.props.event.venueLatLng;
         }
-        this.props.updateEvent(values);
+        await this.props.updateEvent(values);
         this.props.history.push(`/events/${this.props.initialValues.id}`);
       } else {
         let createdEvent = await this.props.createEvent(values);
@@ -130,6 +130,7 @@ class EventForm extends Component {
       pristine,
       event,
       cancelToggle,
+      loading,
     } = this.props;
     return (
       <Grid>
@@ -190,6 +191,7 @@ class EventForm extends Component {
               />
               <Button
                 disabled={invalid || submitting || pristine}
+                loading={loading}
                 positive
                 type="submit"
               >
@@ -210,6 +212,7 @@ class EventForm extends Component {
                 Cancel
               </Button>
               <Button
+                disabled={loading}
                 type="button"
                 color={event.cancelled ? "green" : "red"}
                 floated="right"
