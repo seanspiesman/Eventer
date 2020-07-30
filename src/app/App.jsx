@@ -11,6 +11,7 @@ import UserDetailsPage from "./UserComponents/UserDetails/UserDetailsPage";
 import EventForm from "./EventComponents/EventForm/EventForm";
 import TestComponent from "../testarea/TestComponent";
 import ModalManager from "./Modals/ModalManager";
+import { UserIsAuthneticated } from "./auth/authWrapper";
 
 class App extends React.Component {
   render() {
@@ -27,12 +28,21 @@ class App extends React.Component {
                 <Switch key={this.props.location.key}>
                   <Route exact path="/events" component={EventDashboard} />
                   <Route path="/events/:id" component={EventDetailsPage} />
-                  <Route path="/people" component={PeopleDashboard} />
-                  <Route path="/profile/:id" component={UserDetailsPage} />
-                  <Route path="/settings" component={SettingsDashboard} />
+                  <Route
+                    path="/people"
+                    component={UserIsAuthneticated(PeopleDashboard)}
+                  />
+                  <Route
+                    path="/profile/:id"
+                    component={UserIsAuthneticated(UserDetailsPage)}
+                  />
+                  <Route
+                    path="/settings"
+                    component={UserIsAuthneticated(SettingsDashboard)}
+                  />
                   <Route
                     path={["/createEvent", "/manage/:id"]}
-                    component={EventForm}
+                    component={UserIsAuthneticated(EventForm)}
                   />
                 </Switch>
                 <Route path="/test" component={TestComponent} />

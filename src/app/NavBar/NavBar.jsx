@@ -40,7 +40,7 @@ class NavBar extends Component {
               Eventer
             </Menu.Item>
             <Menu.Item as={NavLink} exact to="/events" name="Events" />
-            {authenticated && (
+            {(authenticated || !authenticated) && (
               <Fragment>
                 <Menu.Item as={NavLink} to="/people" name="people" />
                 <Menu.Item as={NavLink} to="/test" name="Test" />
