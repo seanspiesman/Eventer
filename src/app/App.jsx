@@ -12,6 +12,7 @@ import EventForm from "./EventComponents/EventForm/EventForm";
 import TestComponent from "../testarea/TestComponent";
 import ModalManager from "./Modals/ModalManager";
 import { UserIsAuthneticated } from "./auth/authWrapper";
+import NotFound from "./NotFound";
 
 class App extends React.Component {
   render() {
@@ -44,8 +45,9 @@ class App extends React.Component {
                     path={["/createEvent", "/manage/:id"]}
                     component={UserIsAuthneticated(EventForm)}
                   />
+                  <Route path="/test" component={TestComponent} />
+                  <Route component={NotFound} />
                 </Switch>
-                <Route path="/test" component={TestComponent} />
               </Container>
             </Fragment>
           )}

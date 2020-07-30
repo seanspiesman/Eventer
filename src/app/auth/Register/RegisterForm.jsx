@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { combineValidators, isRequired } from "revalidate";
 import { Form, Segment, Button, Label, Divider } from "semantic-ui-react";
 import { Field, reduxForm } from "redux-form";
-import  TextInput  from "../../common/form/TextInput";
+import TextInput from "../../common/form/TextInput";
 import { registerUser } from "../authActions";
 import SocialLogin from "../SocialLogin/SocialLogin";
 
@@ -54,6 +54,7 @@ const RegisterForm = ({
             fluid
             size="large"
             color="teal"
+            loading={submitting}
           >
             Register
           </Button>

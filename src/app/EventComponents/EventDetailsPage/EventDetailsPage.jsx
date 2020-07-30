@@ -16,6 +16,7 @@ import LoadingComponents from "../../LoadingComponents";
 import { compose } from "redux";
 
 import { openModal } from "../../Modals/modalActions";
+import NotFound from "../../NotFound";
 const mapState = (state, ownProps) => {
   const eventId = ownProps.match.params.id;
 
@@ -25,11 +26,12 @@ const mapState = (state, ownProps) => {
     state.firestore.ordered.events.length > 0
   ) {
     event = state.firestore.ordered.events.filter(
-      (event) => event.id === eventId
+      (event) => event.id === eventId || {}
     )[0];
   }
   return {
     event,
+    requesting: state.firestore.status.requesting,
     loading: state.async.loading,
     auth: state.firebase.auth,
     eventChat:
@@ -66,9 +68,15 @@ class EventDetailsPage extends Component {
       addEventComment,
       eventChat,
       openModal,
+      requesting,
+      match,
     } = this.props;
     const attendees =
-      event && event.attendees && objectToArray(event.attendees);
+      event &&
+      event.attendees &&
+      objectToArray(event.attendees).sort((a, b) => {
+        return a.joinDate.toDate() - b.joinDate.toDate();
+      });
     var isHost = false;
     if (event && event.hostUid !== undefined) {
       isHost = event.hostUid === auth.uid;
@@ -76,37 +84,41 @@ class EventDetailsPage extends Component {
     const isGoing = attendees && attendees.some((a) => a.id === auth.uid);
     const chatTree = !isEmpty(eventChat) && createDataTree(eventChat);
     const authenticated = auth.isLoaded && !auth.isEmpty;
-    if (event) {
-      return (
-        <Grid>
-          <Grid.Column width={10}>
-            <EventDetailHeader
-              authenticated={authenticated}
-              event={event}
-              isGoing={isGoing}
-              isHost={isHost}
-              goingToEvent={goingToEvent}
-              cancelGoingToEvent={cancelGoingToEvent}
-              loading={loading}
-              openModal={openModal}
-            />
-            <EventDetailInfo event={event} />
-            {authenticated && (
-              <EventDetailChat
-                addEventComment={addEventComment}
-                eventId={event.id}
-                eventChat={chatTree}
-              />
-            )}
-          </Grid.Column>
-          <Grid.Column width={6}>
-            <EventDetailSidebar attendees={attendees} />
-          </Grid.Column>
-        </Grid>
-      );
-    } else {
+    const loadingEvent = requesting[`events/${match.params.id}`];
+
+    if (loadingEvent) {
       return <LoadingComponents />;
     }
+    if (Object.keys(event).length === 0) {
+      return <NotFound />;
+    }
+    return (
+      <Grid>
+        <Grid.Column width={10}>
+          <EventDetailHeader
+            authenticated={authenticated}
+            event={event}
+            isGoing={isGoing}
+            isHost={isHost}
+            goingToEvent={goingToEvent}
+            cancelGoingToEvent={cancelGoingToEvent}
+            loading={loading}
+            openModal={openModal}
+          />
+          <EventDetailInfo event={event} />
+          {authenticated && (
+            <EventDetailChat
+              addEventComment={addEventComment}
+              eventId={event.id}
+              eventChat={chatTree}
+            />
+          )}
+        </Grid.Column>
+        <Grid.Column width={6}>
+          <EventDetailSidebar attendees={attendees} />
+        </Grid.Column>
+      </Grid>
+    );
   }
 }
 
