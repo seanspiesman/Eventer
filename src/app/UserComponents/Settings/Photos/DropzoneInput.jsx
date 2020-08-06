@@ -12,7 +12,6 @@ const DropzoneInput = ({ setFiles }) => {
           })
         )
       );
-      console.log(acceptedFiles);
     },
     [setFiles]
   );

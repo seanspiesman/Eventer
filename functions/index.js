@@ -37,10 +37,6 @@ exports.createActivity = functions.firestore
       });
   });
 
-// // Create and Deploy Your First Cloud Functions
-// // https://firebase.google.com/docs/functions/write-firebase-functions
-//
-
 exports.cancelActivity = functions.firestore
   .document("events/{eventId}")
   .onUpdate((event, context) => {
@@ -76,5 +72,52 @@ exports.cancelActivity = functions.firestore
       })
       .catch((error) => {
         return console.log("Error: ", error);
+      });
+  });
+
+exports.userFollowing = functions.firestore
+  .document("users/{followerUid}/following/{followingUid}")
+  .onCreate((event, context) => {
+    console.log("v1");
+    const followerUid = context.params.followerUid;
+    const followingUid = context.params.followingUid;
+
+    const followerDoc = admin.firestore().collection("users").doc(followerUid);
+
+    console.log(followerDoc);
+
+    return followerDoc.get().then((doc) => {
+      let userData = doc.data();
+      console.log({ userData });
+      let follower = {
+        displayName: userData.displayName,
+        photoURL: userData.photoURL || "/assets/user.png",
+        city: userData.city || "unknown city",
+      };
+      return admin
+        .firestore()
+        .collection("users")
+        .doc(followingUid)
+        .collection("followers")
+        .doc(followerUid)
+        .set(follower);
+    });
+  });
+
+exports.unfollowUser = functions.firestore
+  .document("user/{followerUid}/following/{followingUid}")
+  .onDelete((event, context) => {
+    return admin
+      .firestore()
+      .collection("users")
+      .doc(context.params.followingUid)
+      .collection("followers")
+      .doc(context.params.followerUid)
+      .delete()
+      .then(() => {
+        return console.log("document deleted");
+      })
+      .catch((error) => {
+        return console.log(error);
       });
   });

@@ -48,22 +48,21 @@ class EventDetailChat extends Component {
                       <div>{formatDistance(comment.date, Date.now())}</div>
                     </Comment.Metadata>
                     <Comment.Text>{comment.text}</Comment.Text>
-                    <Comment.Actions>
-                      <Comment.Action
-                        onClick={this.handleOpenReplyForm(comment.id)}
-                      >
-                        {showReplyForm && selectedCommentId === comment.id && (
-                          <EventDetailChatForm
-                            addEventComment={addEventComment}
-                            eventId={eventId}
-                            form={`reply_${comment.id}`}
-                            closeForm={this.handleCloseReplyForm}
-                            parentId={comment.id}
-                          />
-                        )}
-                        Reply
-                      </Comment.Action>
-                    </Comment.Actions>
+
+                    <Comment.Action
+                      onClick={this.handleOpenReplyForm(comment.id)}
+                    >
+                      {showReplyForm && selectedCommentId === comment.id && (
+                        <EventDetailChatForm
+                          addEventComment={addEventComment}
+                          eventId={eventId}
+                          form={`reply_${comment.id}`}
+                          closeForm={this.handleCloseReplyForm}
+                          parentId={comment.id}
+                        />
+                      )}
+                      Reply
+                    </Comment.Action>
                   </Comment.Content>
 
                   {comment.childNodes &&

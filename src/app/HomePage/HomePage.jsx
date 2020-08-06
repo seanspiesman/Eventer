@@ -19,7 +19,7 @@ export const HomePage = ({ history }) => {
             alt="logo"
             style={{ marginBottom: 12 }}
           />
-          Eventrack
+          Eventer
         </Header>
         <Button
           onClick={() => {

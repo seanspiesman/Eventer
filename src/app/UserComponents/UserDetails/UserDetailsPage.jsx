@@ -10,7 +10,11 @@ import UserDetailEvents from "./UserDetailEvents";
 import { Grid } from "semantic-ui-react";
 import { userDetailsQuery } from "../../userActions/userQueries";
 import LoadingComponents from "../../LoadingComponents";
-import { getUserEvents } from "../../userActions/userActions";
+import {
+  getUserEvents,
+  followUser,
+  unfollowUser,
+} from "../../userActions/userActions";
 
 const mapState = (state, ownProps) => {
   let userUid = null;
@@ -32,11 +36,14 @@ const mapState = (state, ownProps) => {
     auth: state.firebase.auth,
     photos: state.firestore.ordered.photos,
     requesting: state.firestore.status.requesting,
+    following: state.firestore.ordered.following,
   };
 };
 
 const actions = {
   getUserEvents,
+  followUser,
+  unfollowUser,
 };
 
 class UserDetailsPage extends Component {
@@ -54,12 +61,18 @@ class UserDetailsPage extends Component {
       eventsLoading,
       auth,
       profile,
+      following,
       photos,
       match,
+      followUser,
+      unfollowUser,
       requesting,
     } = this.props;
     const isCurrentUser = auth.uid === match.params.id;
     const loading = Object.values(requesting).some((a) => a === true);
+    const isFollowing = !isEmpty(following);
+    console.log(isFollowing);
+
     if (loading) return <LoadingComponents />;
 
     return (
@@ -67,8 +80,14 @@ class UserDetailsPage extends Component {
         <Grid>
           <UserDetailHeader auth={auth} profile={profile} />
           <UserDetailDescription profile={profile} />
-          <UserDetailSidebar isCurrentUser={isCurrentUser} />
-          <UserDetailPhotos photos={photos} />
+          <UserDetailSidebar
+            isFollowing={isFollowing}
+            profile={profile}
+            followUser={followUser}
+            isCurrentUser={isCurrentUser}
+            unfollowUser={unfollowUser}
+          />
+          {photos && photos.length > 0 && <UserDetailPhotos photos={photos} />}
           <UserDetailEvents
             eventsLoading={eventsLoading}
             events={events}
@@ -82,5 +101,7 @@ class UserDetailsPage extends Component {
 
 export default compose(
   connect(mapState, actions),
-  firestoreConnect((auth, userUid) => userDetailsQuery(auth, userUid))
+  firestoreConnect((auth, userUid, match) =>
+    userDetailsQuery(auth, userUid, match)
+  )
 )(UserDetailsPage);
