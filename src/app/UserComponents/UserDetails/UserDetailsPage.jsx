@@ -73,7 +73,6 @@ class UserDetailsPage extends Component {
     const isFollowing = !isEmpty(following);
 
     if (loading) return <LoadingComponents />;
-
     return (
       <Fragment>
         <Grid>

@@ -26,7 +26,7 @@ const UserDetailDescription = ({ profile }) => {
           </Grid.Column>
           <Grid.Column width={6}>
             <Header icon="heart outline" content="Interests" />
-            {profile.intersts ? (
+            {profile.interests ? (
               <List>
                 {profile.interests &&
                   profile.interests.map((interest, index) => {
