@@ -45,7 +45,7 @@ class App extends React.Component {
                     path={["/createEvent", "/manage/:id"]}
                     component={UserIsAuthneticated(EventForm)}
                   />
-                  <Route path="/test" component={TestComponent} />
+                  {/* <Route path="/test" component={TestComponent} /> */}
                   <Route component={NotFound} />
                 </Switch>
               </Container>

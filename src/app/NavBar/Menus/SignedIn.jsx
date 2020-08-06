@@ -1,8 +1,8 @@
 import React from "react";
 import { Menu, Image, Dropdown } from "semantic-ui-react";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 
-export const SignedIn = ({ signOut, profile, auth }) => {
+const SignedIn = ({ signOut, profile, auth }) => {
   return (
     <Menu.Item position="right">
       <Image
@@ -13,8 +13,14 @@ export const SignedIn = ({ signOut, profile, auth }) => {
       <Dropdown pointing="top left" text={profile.displayName}>
         <Dropdown.Menu>
           <Dropdown.Item text="Create Event" icon="plus" />
-          <Dropdown.Item text="My Events" icon="calendar" />
-          <Dropdown.Item text="My Network" icon="users" />
+          {/* <Dropdown.Item text="My Events" icon="calendar" /> */}
+          <Dropdown.Item
+            text="My Network"
+            icon="users"
+            as={Link}
+            to="/people"
+            name="people"
+          />
           <Dropdown.Item
             as={Link}
             to={`/profile/${auth.uid}`}
@@ -33,3 +39,5 @@ export const SignedIn = ({ signOut, profile, auth }) => {
     </Menu.Item>
   );
 };
+
+export default withRouter(SignedIn);

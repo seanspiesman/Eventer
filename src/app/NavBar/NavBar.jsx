@@ -4,7 +4,7 @@ import { withFirebase } from "react-redux-firebase";
 import { Menu, Container, Button } from "semantic-ui-react";
 import { NavLink, Link, withRouter } from "react-router-dom";
 import { SignedOut } from "./Menus/SignedOut";
-import { SignedIn } from "./Menus/SignedIn";
+import SignedIn from "./Menus/SignedIn";
 import { openModal } from "../Modals/modalActions";
 
 const actions = { openModal };
@@ -43,7 +43,7 @@ class NavBar extends Component {
             {(authenticated || !authenticated) && (
               <Fragment>
                 <Menu.Item as={NavLink} to="/people" name="people" />
-                <Menu.Item as={NavLink} to="/test" name="Test" />
+                {/* <Menu.Item as={NavLink} to="/test" name="Test" /> */}
 
                 <Menu.Item>
                   <Button

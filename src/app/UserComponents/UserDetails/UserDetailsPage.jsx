@@ -71,7 +71,6 @@ class UserDetailsPage extends Component {
     const isCurrentUser = auth.uid === match.params.id;
     const loading = Object.values(requesting).some((a) => a === true);
     const isFollowing = !isEmpty(following);
-    console.log(isFollowing);
 
     if (loading) return <LoadingComponents />;
 
