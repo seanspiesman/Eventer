@@ -21,6 +21,7 @@ const RegisterForm = ({
   error,
   invalid,
   submitting,
+  socialLogin,
 }) => {
   return (
     <div>
@@ -59,7 +60,7 @@ const RegisterForm = ({
             Register
           </Button>
           <Divider horizontal>Or</Divider>
-          <SocialLogin />
+          {/* <SocialLogin socialLogin={socialLogin} /> */}
         </Segment>
       </Form>
     </div>
